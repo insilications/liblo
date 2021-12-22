@@ -11,6 +11,8 @@ Source0  : file:///aot/build/clearlinux/packages/liblo/liblo-v0.31.tar.gz
 Summary  : A lightweight OSC server/client library
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
+Requires: liblo-bin = %{version}-%{release}
+Requires: liblo-lib = %{version}-%{release}
 BuildRequires : PyYAML
 BuildRequires : Pygments
 BuildRequires : Sphinx
@@ -125,6 +127,43 @@ sends an OSC message specified by command line arguments, while oscdump
 receives OSC messages and prints to standard output.  oscsendfile transmits
 all messages in a file containing the recorded output of oscdump.
 
+%package bin
+Summary: bin components for the liblo package.
+Group: Binaries
+
+%description bin
+bin components for the liblo package.
+
+
+%package dev
+Summary: dev components for the liblo package.
+Group: Development
+Requires: liblo-lib = %{version}-%{release}
+Requires: liblo-bin = %{version}-%{release}
+Provides: liblo-devel = %{version}-%{release}
+Requires: liblo = %{version}-%{release}
+
+%description dev
+dev components for the liblo package.
+
+
+%package lib
+Summary: lib components for the liblo package.
+Group: Libraries
+
+%description lib
+lib components for the liblo package.
+
+
+%package staticdev
+Summary: staticdev components for the liblo package.
+Group: Default
+Requires: liblo-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the liblo package.
+
+
 %prep
 %setup -q -n liblo
 cd %{_builddir}/liblo
@@ -135,7 +174,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1640212289
+export SOURCE_DATE_EPOCH=1640212350
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -220,9 +259,40 @@ make  %{?_smp_mflags}    V=1 VERBOSE=1
 
 
 %install
-export SOURCE_DATE_EPOCH=1640212289
+export SOURCE_DATE_EPOCH=1640212350
 rm -rf %{buildroot}
 %make_install
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/oscdump
+/usr/bin/oscsend
+/usr/bin/oscsendfile
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/lo/lo.h
+/usr/include/lo/lo_cpp.h
+/usr/include/lo/lo_endian.h
+/usr/include/lo/lo_errors.h
+/usr/include/lo/lo_lowlevel.h
+/usr/include/lo/lo_macros.h
+/usr/include/lo/lo_osc_types.h
+/usr/include/lo/lo_serverthread.h
+/usr/include/lo/lo_throw.h
+/usr/include/lo/lo_types.h
+/usr/lib64/liblo.la
+/usr/lib64/liblo.so
+/usr/lib64/pkgconfig/liblo.pc
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/liblo.so.7
+/usr/lib64/liblo.so.7.4.1
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/liblo.a
