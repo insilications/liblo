@@ -1,5 +1,5 @@
 PKG_NAME := liblo
-URL = /insilications/build/git-clr/zita-convolver-clr/
+URL = https://github.com/radarsat1/liblo.git
 ARCHIVES = 
 ARCHIVES_GIT = 
 
